@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1000px" height="1000px"></canvas>
+
+    <button id="Pausa">Pausar</button>
+
+    <audio id="Screamer" src="sonido/pausa.mp3"></audio>
+
+    <script>
+        const myCanvas = document.getElementById("canvas");
+        const ctx = myCanvas.getContext("2d");
+
+
+        const playerImage = new Image();
+        playerImage.src = 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Original_PacMan.svg'; 
+
+
+        class Figura {
+            constructor(x, y, a, l, color, isImage = false) {
+                this.x = x;
+                this.y = y;
+                this.width = a;
+                this.height = l;
+                this.color = color;
+                this.isImage = isImage; 
+            }
+
+            draw() {
+                if (this.isImage && playerImage.complete) {
+                    ctx.drawImage(playerImage, this.x, this.y, this.width, this.height);
+                } else {
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            }
+
+            isCollidingWith(other) {
+                return !(this.x + this.width < other.x ||
+                    this.x > other.x + other.width ||
+                    this.y + this.height < other.y ||
+                    this.y > other.y + other.height);
+            }
+        }
+
+        const itbox = new Figura(100, 200, 40, 40, "red", true); 
+        const pto = new Figura(400, 400, 30, 30, "blue");
+
+        const obstaculo = [
+            new Figura(200, 250, 70, 250, "Black"),
+            new Figura(600, 250, 70, 250, "Black"),
+            new Figura(250, 600, 350, 50, "Black")
+        ];
+
+        let direction = "";
+        let speed = 5; 
+        let isPaused = false; 
+
+        document.addEventListener("keydown", (event) => {
+            switch (event.key) {
+                case "w":
+                    direction = "up";
+                    break;
+                case "s":
+                    direction = "down";
+                    break;
+                case "a":
+                    direction = "left";
+                    break;
+                case "d":
+                    direction = "right";
+                    break;
+            }
+        });
+
+        function update() {
+            if (isPaused) return; 
+
+            const previousX = itbox.x;
+            const previousY = itbox.y;
+
+            switch (direction) {
+                case "up":
+                    itbox.y -= speed;
+                    break;
+                case "down":
+                    itbox.y += speed;
+                    break;
+                case "left":
+                    itbox.x -= speed;
+                    break;
+                case "right":
+                    itbox.x += speed;
+                    break;
+            }
+
+            obstaculo.forEach(obstacle => {
+                if (itbox.isCollidingWith(obstacle)) {
+                    itbox.x = previousX;
+                    itbox.y = previousY;
+                }
+            });
+
+            if (itbox.isCollidingWith(pto)) {
+                pto.x = Math.floor(Math.random() * (myCanvas.width - pto.width));
+                pto.y = Math.floor(Math.random() * (myCanvas.height - pto.height));
+            }
+
+          //a webo encontre la webada que me tronaba el codigo anterior
+        }
+
+
+        function paint() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+            itbox.draw();
+            pto.draw();
+
+            obstaculo.forEach(obstacle => obstacle.draw());
+
+            update();
+
+            requestAnimationFrame(paint);
+        }
+
+
+        const pauseBtn = document.getElementById("Pausa");
+        const Psound = document.getElementById("Screamer");
+
+        pauseBtn.addEventListener("click", () => {
+            isPaused = !isPaused;
+            pauseBtn.textContent = isPaused ? "Reanudar" : "Pausar"; 
+            Psound.play(); 
+        });
+
+
+        playerImage.onload = function() {
+            paint(); 
+        }
+
+    </script>
+
+    <style type="text/css">
+        body {
+            background-color: rgb(190, 190, 190);
+        }
+
+        #Pausa {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</body>
+
+</html>
