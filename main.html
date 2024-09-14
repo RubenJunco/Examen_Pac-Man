@@ -18,10 +18,8 @@
         const myCanvas = document.getElementById("canvas");
         const ctx = myCanvas.getContext("2d");
 
-
         const playerImage = new Image();
-        playerImage.src = 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Original_PacMan.svg'; 
-
+        playerImage.src = 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Original_PacMan.svg';
 
         class Figura {
             constructor(x, y, a, l, color, isImage = false) {
@@ -30,7 +28,7 @@
                 this.width = a;
                 this.height = l;
                 this.color = color;
-                this.isImage = isImage; 
+                this.isImage = isImage;
             }
 
             draw() {
@@ -49,9 +47,21 @@
                     this.y > other.y + other.height);
             }
         }
+        //pacman(nombre provicional)
+        const itbox = new Figura(700, 350, 30, 30, "red", true);
 
-        const itbox = new Figura(700, 350, 30, 30, "red", true); 
-        const pto = new Figura(400, 400, 30, 30, "blue");
+        // enemigos
+        const enemies = [
+            new Figura(400, 470, 30, 30, "blue"),
+            new Figura(400, 520, 30, 30, "green"),
+            new Figura(430, 470, 30, 30, "purple"),
+            new Figura(430, 520, 30, 30, "orange")
+        ];
+
+        const tp1 = new Figura(430, 0, 140, 30, "blue");
+        const tp2 = new Figura(430, 960, 140, 30, "blue");
+        const tp3 = new Figura(0, 460, 30, 80, "blue");
+        const tp4 = new Figura(970, 460, 30, 80, "blue");
 
         // Mapa
         const obstaculo = [
@@ -88,8 +98,8 @@
             new Figura(570, 900, 30, 80, "Black"),
 
             //caja centro
-            new Figura(340, 450, 30, 100, "Black"),
-            new Figura(620, 450, 30, 100, "Black"),
+            new Figura(340, 450, 30, 60, "Black"),
+            new Figura(620, 450, 30, 60, "Black"),
             new Figura(340, 550, 310, 30, "Black"),
             new Figura(300, 430, 155, 30, "Black"),
             new Figura(540, 430, 155, 30, "Black"),
@@ -137,8 +147,11 @@
         ];
 
         let direction = "";
-        let speed = 5; 
-        let isPaused = false; 
+        let speed = 5;
+        let isPaused = false;
+        const enemySpeed = 3;
+
+        const enemyDirections = ["right", "left", "up", "down"];  
 
         document.addEventListener("keydown", (event) => {
             switch (event.key) {
@@ -157,8 +170,53 @@
             }
         });
 
+        function moveEnemy(enemy, index) {
+            const previousX = enemy.x;
+            const previousY = enemy.y;
+
+            switch (enemyDirections[index]) {
+                case "up":
+                    enemy.y -= enemySpeed;
+                    break;
+                case "down":
+                    enemy.y += enemySpeed;
+                    break;
+                case "left":
+                    enemy.x -= enemySpeed;
+                    break;
+                case "right":
+                    enemy.x += enemySpeed;
+                    break;
+            }
+
+            let collided = false;
+            obstaculo.forEach(obstacle => {
+                if (enemy.isCollidingWith(obstacle)) {
+                    collided = true;
+                }
+            });
+
+            if (collided) {
+                enemy.x = previousX;
+                enemy.y = previousY;
+                enemyDirection(index);
+            }
+
+            // Limitar movimiento dentro del canvas
+            if (enemy.x < 0 || enemy.x + enemy.width > myCanvas.width || enemy.y < 0 || enemy.y + enemy.height > myCanvas.height) {
+                enemy.x = previousX;
+                enemy.y = previousY;
+                enemyDirection(index);
+            }
+        }
+
+        function enemyDirection(index) {
+            const directions = ["up", "down", "left", "right"];
+            enemyDirections[index] = directions[Math.floor(Math.random() * directions.length)];
+        }
+
         function update() {
-            if (isPaused) return; 
+            if (isPaused) return;
 
             const previousX = itbox.x;
             const previousY = itbox.y;
@@ -185,20 +243,32 @@
                 }
             });
 
-            if (itbox.isCollidingWith(pto)) {
-                pto.x = Math.floor(Math.random() * (myCanvas.width - pto.width));
-                pto.y = Math.floor(Math.random() * (myCanvas.height - pto.height));
+            if (itbox.isCollidingWith(tp1)) {
+                itbox.x = 440;
+                itbox.y = 930;
+            } else if (itbox.isCollidingWith(tp2)) {
+                itbox.x = 450;
+                itbox.y = 50;
+            } else if (itbox.isCollidingWith(tp3)) {
+                itbox.x = 920;
+                itbox.y = 460;
+            } else if (itbox.isCollidingWith(tp4)) {
+                itbox.x = 60;
+                itbox.y = 460;
             }
 
-          //a webo encontre la webada que me tronaba el codigo anterior
+            enemies.forEach((enemy, index) => moveEnemy(enemy, index));
         }
-
 
         function paint() {
             ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
             itbox.draw();
-            pto.draw();
+            enemies.forEach(enemy => enemy.draw());
+            tp1.draw();
+            tp2.draw();
+            tp3.draw();
+            tp4.draw();
 
             obstaculo.forEach(obstacle => obstacle.draw());
 
@@ -207,19 +277,17 @@
             requestAnimationFrame(paint);
         }
 
-
         const pauseBtn = document.getElementById("Pausa");
         const Psound = document.getElementById("Screamer");
 
         pauseBtn.addEventListener("click", () => {
             isPaused = !isPaused;
-            pauseBtn.textContent = isPaused ? "Reanudar" : "Pausar"; 
-            Psound.play(); 
+            pauseBtn.textContent = isPaused ? "Reanudar" : "Pausar";
+            Psound.play();
         });
 
-
-        playerImage.onload = function() {
-            paint(); 
+        playerImage.onload = function () {
+            paint();
         }
 
     </script>
