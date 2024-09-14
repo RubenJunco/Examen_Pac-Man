@@ -50,13 +50,90 @@
             }
         }
 
-        const itbox = new Figura(100, 200, 40, 40, "red", true); 
+        const itbox = new Figura(700, 350, 30, 30, "red", true); 
         const pto = new Figura(400, 400, 30, 30, "blue");
 
+        // Mapa
         const obstaculo = [
-            new Figura(200, 250, 70, 250, "Black"),
-            new Figura(600, 250, 70, 250, "Black"),
-            new Figura(250, 600, 350, 50, "Black")
+            //pared izquierda
+            new Figura(0, 0, 30, 450, "Black"),
+            new Figura(0, 550, 30, 450, "Black"),
+
+            //linea centro izq.
+            new Figura(30, 420, 60, 30, "Black"),
+            new Figura(30, 550, 60, 30, "Black"),
+
+            //pared derecha
+            new Figura(970, 0, 30, 450, "Black"),
+            new Figura(970, 550, 30, 450, "Black"),
+
+            //linea centro der.
+            new Figura(910, 420, 60, 30, "Black"),
+            new Figura(910, 550, 60, 30, "Black"),
+
+            //techo
+            new Figura(0, 0, 400, 30, "Black"),
+            new Figura(570, 0, 400, 30, "Black"),
+            
+            //linea techo centro.
+            new Figura(400, 0, 30, 80, "Black"),
+            new Figura(570, 0, 30, 80, "Black"),
+
+            //suelo
+            new Figura(0, 970, 430, 30, "Black"),
+            new Figura(570, 970, 400, 30, "Black"),
+
+            //linea suelo centro.
+            new Figura(400, 900, 30, 80, "Black"),
+            new Figura(570, 900, 30, 80, "Black"),
+
+            //caja centro
+            new Figura(340, 450, 30, 100, "Black"),
+            new Figura(620, 450, 30, 100, "Black"),
+            new Figura(340, 550, 310, 30, "Black"),
+            new Figura(300, 430, 155, 30, "Black"),
+            new Figura(540, 430, 155, 30, "Black"),
+
+            //linea derecha ext.
+            new Figura(830, 100, 30, 350, "Black"),
+            new Figura(640, 100, 190, 30, "Black"),
+            new Figura(830, 550, 30, 350, "Black"),
+            new Figura(640, 870, 190, 30, "Black"),
+
+            new Figura(900, 70, 30, 300, "Black"),
+            new Figura(900, 630, 30, 300, "Black"),
+            
+            //linea izquierda ext.
+            new Figura(140, 100, 30, 350, "Black"),
+            new Figura(160, 100, 200, 30, "Black"),
+            new Figura(140, 550, 30, 350, "Black"),
+            new Figura(160, 870, 200, 30, "Black"),
+
+            new Figura(70, 70, 30, 300, "Black"),
+            new Figura(70, 630, 30, 300, "Black"),
+
+            //linea centro abajo
+            new Figura(290, 650, 410, 30, "Black"),
+            new Figura(485, 670, 30, 80, "Black"),
+            new Figura(290, 750, 410, 30, "Black"),
+
+            new Figura(400, 820, 200, 30, "Black"),
+            //rayita centro
+            new Figura(390, 370, 200, 20, "Black"),
+            
+            //linea centro arriba
+            new Figura(290, 300, 410, 30, "Black"),
+            new Figura(485, 220, 30, 80, "Black"),
+            new Figura(290, 200, 410, 30, "Black"),
+
+            new Figura(400, 130, 200, 30, "Black"),
+
+            //lineas derechas interiores
+            new Figura(210, 180, 30, 280, "Black"),
+            new Figura(210, 540, 30, 280, "Black"),
+
+            new Figura(750, 180, 30, 280, "Black"),
+            new Figura(750, 540, 30, 280, "Black")
         ];
 
         let direction = "";
