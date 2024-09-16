@@ -35,7 +35,14 @@
     <audio id="Screamer" src="sonido/pausa.mp3"></audio>
     <audio id="musicaFondo" src="sonido/fondo.mp3" loop autoplay></audio>
     
+    
     <script>
+
+        var audiowp = document.getElementById("musicaFondo");
+        var audiop = document.getElementById("Screamer");
+
+        audiowp.volume = 0.5; 
+        audiop.volume = 0.2;
 
         const myCanvas = document.getElementById("canvas");
         const ctx = myCanvas.getContext("2d");
@@ -47,7 +54,7 @@
         playerImage.src = 'images/prota.png';
 
         const tpImg = new Image();
-        tpImg.src = 'images/tp.gif';
+        tpImg.src = 'images/tp.png';
         
 
          // Cronómetro
@@ -91,7 +98,10 @@
                 if (this.isImage && playerImage.complete) {
                     
                     ctx.drawImage(fondoImage, 0, 0, 1900, 1000);
-                    ctx.drawImage(tpImg,100,100,200,200);
+                    ctx.drawImage(tpImg,10,450,30,100);
+                    ctx.drawImage(tpImg,425,960,150,30);
+                    ctx.drawImage(tpImg,940,450,30,100);
+                    ctx.drawImage(tpImg,425,20,150,30);
                     ctx.drawImage(playerImage, this.x, this.y, this.width, this.height);
                 } else {
                     ctx.fillStyle = this.color;
@@ -116,21 +126,37 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        const fruit = new Figura(getRandomPosition(100, 1000), getRandomPosition(100, 1000), 30, 30, "red");
+
+        
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        let randomColor = getRandomColor();
+
+        
+
+        const fruit = new Figura(getRandomPosition(100, 1000), getRandomPosition(100, 1000), 30, 30, randomColor);
+        setInterval(getRandomColor, 100);
 
 
         // enemigos
         const enemies = [
-            new Figura(400, 470, 30, 30, "blue"),
-            new Figura(400, 520, 30, 30, "green"),
-            new Figura(430, 470, 30, 30, "purple"),
-            new Figura(430, 520, 30, 30, "orange")
+            new Figura(400, 470, 30, 30, 'rgb(106, 45, 45)'),
+            new Figura(400, 520, 30, 30, 'rgb(106, 87, 45)'),
+            new Figura(430, 470, 30, 30, 'rgb(45, 99, 106)'),
+            new Figura(430, 520, 30, 30, 'rgb(45, 106, 55)')
         ];
 
-        const tp1 = new Figura(430, 0, 140, 30, "blue");
-        const tp2 = new Figura(430, 960, 140, 30, "blue");
-        const tp3 = new Figura(0, 460, 30, 80, "blue");
-        const tp4 = new Figura(970, 460, 30, 80, "blue");
+        const tp1 = new Figura(430, 0, 140, 10, "black");
+        const tp2 = new Figura(450, 1000, 100, 10, "black");
+        const tp3 = new Figura(0, 460, 10, 80, "black");
+        const tp4 = new Figura(970, 460, 10, 80, "black");
 
         //puntos
         const bola1 = new Figura(45, 50, 10, 10, "yellow");
@@ -173,84 +199,84 @@
         // Mapa
         const obstaculo = [
             //pared izquierda
-            new Figura(0, 0, 30, 450, "White"),
-            new Figura(0, 550, 30, 450, "White"),
+            new Figura(0, 0, 30, 450, 'rgb(97,97,97)'),
+            new Figura(0, 550, 30, 450, 'rgb(97,97,97)'),
 
             //linea centro izq.
-            new Figura(30, 420, 60, 30, "White"),
-            new Figura(30, 550, 60, 30, "White"),
+            new Figura(30, 420, 60, 30, 'rgb(97,97,97)'),
+            new Figura(30, 550, 60, 30, 'rgb(97,97,97)'),
 
             //pared derecha
-            new Figura(970, 0, 30, 450, "White"),
-            new Figura(970, 550, 30, 450, "White"),
+            new Figura(970, 0, 30, 450, 'rgb(97,97,97)'),
+            new Figura(970, 550, 30, 450, 'rgb(97,97,97)'),
 
             //linea centro der.
-            new Figura(910, 420, 60, 30, "White"),
-            new Figura(910, 550, 60, 30, "White"),
+            new Figura(910, 420, 60, 30, 'rgb(97,97,97)'),
+            new Figura(910, 550, 60, 30, 'rgb(97,97,97)'),
 
             //techo
-            new Figura(0, 0, 400, 30, "White"),
-            new Figura(570, 0, 400, 30, "White"),
+            new Figura(0, 0, 400, 30, 'rgb(97,97,97)'),
+            new Figura(570, 0, 400, 30, 'rgb(97,97,97)'),
             
             //linea techo centro.
-            new Figura(400, 0, 30, 80, "White"),
-            new Figura(570, 0, 30, 80, "White"),
+            new Figura(400, 0, 30, 80, 'rgb(97,97,97)'),
+            new Figura(570, 0, 30, 80, 'rgb(97,97,97)'),
 
             //suelo
-            new Figura(0, 970, 430, 30, "White"),
-            new Figura(570, 970, 400, 30, "White"),
+            new Figura(0, 970, 430, 30, 'rgb(97,97,97)'),
+            new Figura(570, 970, 400, 30, 'rgb(97,97,97)'),
 
             //linea suelo centro.
-            new Figura(400, 900, 30, 80, "White"),
-            new Figura(570, 900, 30, 80, "White"),
+            new Figura(400, 900, 30, 80, 'rgb(97,97,97)'),
+            new Figura(570, 900, 30, 80, 'rgb(97,97,97)'),
 
             //caja centro
-            new Figura(340, 450, 30, 60, "White"),
-            new Figura(620, 450, 30, 60, "White"),
-            new Figura(340, 550, 310, 30, "White"),
-            new Figura(300, 430, 155, 30, "White"),
-            new Figura(540, 430, 155, 30, "White"),
+            new Figura(340, 450, 30, 60, 'rgb(97,97,97)'),
+            new Figura(620, 450, 30, 60, 'rgb(97,97,97)'),
+            new Figura(340, 550, 310, 30, 'rgb(97,97,97)'),
+            new Figura(300, 430, 155, 30, 'rgb(97,97,97)'),
+            new Figura(540, 430, 155, 30, 'rgb(97,97,97)'),
 
             //linea derecha ext.
-            new Figura(830, 100, 30, 350, "White"),
-            new Figura(640, 100, 190, 30, "White"),
-            new Figura(830, 550, 30, 350, "White"),
-            new Figura(640, 870, 190, 30, "White"),
+            new Figura(830, 100, 30, 350, 'rgb(97,97,97)'),
+            new Figura(640, 100, 190, 30, 'rgb(97,97,97)'),
+            new Figura(830, 550, 30, 350, 'rgb(97,97,97)'),
+            new Figura(640, 870, 190, 30, 'rgb(97,97,97)'),
 
-            new Figura(900, 70, 30, 300, "White"),
-            new Figura(900, 630, 30, 300, "White"),
+            new Figura(900, 70, 30, 300, 'rgb(97,97,97)'),
+            new Figura(900, 630, 30, 300, 'rgb(97,97,97)'),
             
             //linea izquierda ext.
-            new Figura(140, 100, 30, 350, "White"),
-            new Figura(160, 100, 200, 30, "White"),
-            new Figura(140, 550, 30, 350, "White"),
-            new Figura(160, 870, 200, 30, "White"),
+            new Figura(140, 100, 30, 350, 'rgb(97,97,97)'),
+            new Figura(160, 100, 200, 30, 'rgb(97,97,97)'),
+            new Figura(140, 550, 30, 350, 'rgb(97,97,97)'),
+            new Figura(160, 870, 200, 30, 'rgb(97,97,97)'),
 
-            new Figura(70, 70, 30, 300, "White"),
-            new Figura(70, 630, 30, 300, "White"),
+            new Figura(70, 70, 30, 300, 'rgb(97,97,97)'),
+            new Figura(70, 630, 30, 300, 'rgb(97,97,97)'),
 
             //linea centro abajo
-            new Figura(290, 650, 410, 30, "White"),
-            new Figura(485, 670, 30, 80, "White"),
-            new Figura(290, 750, 410, 30, "White"),
+            new Figura(290, 650, 410, 30, 'rgb(97,97,97)'),
+            new Figura(485, 670, 30, 80, 'rgb(97,97,97)'),
+            new Figura(290, 750, 410, 30, 'rgb(97,97,97)'),
 
-            new Figura(400, 820, 200, 30, "White"),
+            new Figura(400, 820, 200, 30, 'rgb(97,97,97)'),
             //rayita centro
-            new Figura(390, 370, 200, 20, "White"),
+            new Figura(390, 370, 200, 20, 'rgb(97,97,97)'),
             
             //linea centro arriba
-            new Figura(290, 300, 410, 30, "White"),
-            new Figura(485, 220, 30, 80, "White"),
-            new Figura(290, 200, 410, 30, "White"),
+            new Figura(290, 300, 410, 30, 'rgb(97,97,97)'),
+            new Figura(485, 220, 30, 80, 'rgb(97,97,97)'),
+            new Figura(290, 200, 410, 30, 'rgb(97,97,97)'),
 
-            new Figura(400, 130, 200, 30, "White"),
+            new Figura(400, 130, 200, 30, 'rgb(97,97,97)'),
 
             //lineas derechas interiores
-            new Figura(210, 180, 30, 280, "White"),
-            new Figura(210, 540, 30, 280, "White"),
+            new Figura(210, 180, 30, 280, 'rgb(97,97,97)'),
+            new Figura(210, 540, 30, 280, 'rgb(97,97,97)'),
 
-            new Figura(750, 180, 30, 280, "White"),
-            new Figura(750, 540, 30, 280, "White")
+            new Figura(750, 180, 30, 280, 'rgb(97,97,97)'),
+            new Figura(750, 540, 30, 280, 'rgb(97,97,97)')
 
             
         ];
@@ -333,9 +359,10 @@
         function generateRandomPosition() {
             fruit.x = Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000;
             fruit.y = Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000;
+            
         }
 
-        setInterval(generateRandomPosition, 15000);  // Actualizar la posición de la fruta cada 15 segundos
+        setInterval(generateRandomPosition, 10000);  
 
         //
        
@@ -724,9 +751,9 @@
 
     .div {
         position: fixed;
-        top: 0px;
-        left: 800px;
-        font-size: 40px;
+        top: 50px;
+        left: 1260px;
+        font-size: 25px;
     }
 
     .control-btn {
@@ -739,18 +766,18 @@
     }
 
     #Pausa {
-        top: 250px;
-        left: 1535px;
+        top: 160px;
+        left: 1500px;
     }
 
     #MusicaToggle {
-        top: 250px;
-        left: 1120px;
+        top: 160px;
+        left: 1070px;
     }
     .cronometro {
             position: absolute;
             top: 160px;
-            right: 460px;
+            right: 420px;
             color: white;
             font-size: 40px;
             font-family: 'Bebas Neue', sans-serif;
@@ -758,6 +785,9 @@
             padding: 10px;
             border-radius: 5px;
         }
+
+    
+    
         
     </style>
 </body>
